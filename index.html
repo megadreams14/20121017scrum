@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>About Canvas</title>
+    <meta name="viewport” content="width=device-width”>
+    <meta name="description" content="website description">
+    <meta name="keywords" content="website keywords, website keywords" >
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252" >
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine&amp;v1" >
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" >
+    <link rel="stylesheet" type="text/css" href="style/style.css" >
+
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css'>
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css'>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCss.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
+    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
+    <script language="javascript" type="text/javascript">
+    SyntaxHighlighter.config.bloggerMode = true;
+    SyntaxHighlighter.all();
+    </script>
+    <script>
+        window.onload = function() { setTimeout(scrollTo, 100, 0, 1); }
+    </script>
+</head>
+
+
+<body>
+    <div id="main">
+        <header id="header">
+            <div id="logo">
+              <h1>About<a href="#">_Canvas</a></h1>
+              <div class="slogan">Sep 21, 2012   Daiki Ikemoto</div>
+            </div>
+        </header>
+      <div id="site_content">
+          <article id="content">
+              <section>
+                  <h1>目次</h1>
+                  <ul>
+                    <li><a href="#sec_1">何を作ったか？</a></li>
+                    <li><a href="#sec_2">複数の敵を描画するには？</a></li>
+                    <li><a href="#sec_3">描画するインターバルが異なるものを上手く描画するには？</a></li>
+                    <li><a href="#sec_4">ユーザーエージェントを見分けるには？</a></li>
+                    <li><a href="#sec_5">まとめ</a></li>
+
+                  </ul>
+              </section>
+              <section>
+                  <article>
+                      <h1 id="sec_1">何を作ったか？</h1>
+                      <p>シューティングゲームを作りました。</p>
+                      <div><img src="style/screenshot.png" alt="シューティングゲームのスクリーンショットです。"></div>
+                      <p><a href="../index.html" target="_blank">デモ(http://ws.jpw.jp/fy12sp/01/)</a></p> 
+                      <p><a href="ikemoto_canvas.zip">ソースコードDL</a></p>
+                  </article> 
+              </section>
+              <section>
+                  <article>
+                      <hgroup>
+                          <h1 id="sec_2">複数の敵を描画するには？</h1>
+                          <h2>配列を使う</h2>
+                      </hgroup>
+                      <p>「どうやって、複数の敵を画面に描画するのか？」というところで結構詰まりました。</p>
+                      <p>敵を単体で描画するだけならば、</p>
+                      <pre class="brush: javascript; ">
+                        ctx.fillStyle = "rgb(200, 0, 0)";
+                        ctx.fillRect(20, 30, 60, 40);
+                      </pre>
+                      <p>これだけで済みます。</p>
+                      <p>しかし、今回は一定時間ごとに、敵をランダムな場所に出現させたいです。その場合、上記の方法ではきりがありません。敵を描画するためには、描画の起点となるx座標とy座標さえわかれば良かったので、オブジェクトを作りそれぞれにx座標、y座標を持たせて配列で管理しました。</p>
+
+                      <code>
+                          <pre class="brush: javascript; ">
+
+                              //敵の配列を作る
+                              var enemyList = new Array();
+
+                              //オブジェクトを作る（キーと値の組み合わせ作る）
+                              var e_obj = new Object();
+
+                              //敵を出現させる位置のx座標
+                              e_obj.x = Math.floor(Math.random() * (WIDTH - WIDTH / 11));
+
+                              //敵を出現させる時のy座標
+                              e_obj.y= HEIGHT * 0.05;
+
+                              //配列に追加
+                              enemyList.push(e_obj);
+
+                              //配列に含まれているオブジェクトを描画
+                              for(i = 0; i < enemyList.length; i++) {
+
+                                  ctx.fillRect(enemyList[i].x, enemyList[i].y, WIDTH / 11 , WIDTH / 11);
+
+                              }
+                          </pre>
+                      </code>
+                     
+                      <p>参考:<a href="http://d.hatena.ne.jp/juntk/20100425/1272201655" target="_blank">HTML5 Canvasでシューティングっぽいもの - juntkの日記</a></p>
+                  </article>
+              </section>
+              <section>
+                  <article>
+                      <hgroup>
+                          <h1 id="sec_3">描画するインターバルが異なるものを上手く描画するには？</h1>
+                          <h2>カウント用の変数を用意する</h2>
+                      </hgroup>
+                      <p>このシューティングゲームでは、30msごとに画面がクリアされ、再描画されます。描画の際には自機、弾、敵が描画されなければなりません。</p>
+                      <p>しかし、それぞれの描画のタイミングは異なります。例えば、敵が30msごとに出現すると大変なことになりますよね。さらに、今回は難易度設定のため、敵の出現タイミングを3000msごと,600msごと,150msごとの3段階に分けたいです。</p>
+                      <p>「一定のタイミングで出現させたいから"setTimeout(setInterval)"を、自機、弾、敵ごとに設定して使えば良いやん！」と考えて実装すると残念なことになります。それぞれの描画タイミングがバラバラなため、描画されたものがチラチラ消えたり現れたりしてしまいます。</p>
+                      <p>今回は画面が30msごとに再描画されるので、それにあわせて自機、弾、敵を描画するとチラチラしなくなります。
+                        そのために、30msごとにカウントされる変数を作ります。そして、3000msで敵を出現させたいのであれば「100カウントされたら敵を出現させる」ということを行えばOKです。</p>
+                      <code>
+                          <pre class="brush: javascript; ">
+                              //ループカウント用の変数
+                              var num = 0;
+
+                              //メインループ
+                              function mainLoop () {
+
+                                  //canvasのクリア
+                                  makeField ();
+
+                                  //自機描画
+                                  drawShip();
+
+                                  //カウント用の変数
+                                  num += 1;
+                                  
+                                  //3000msたったら敵を出現する。
+                                  if (num % 100 === 0){
+
+                                      var e_obj = new Object();
+
+                                      //敵が出現する位置のx座標は0 ~ 290  
+                                      e_obj.x = Math.floor(Math.random() * (WIDTH - WIDTH / 11));
+
+                                      //敵出現時のy座標
+                                      e_obj.y= HEIGHT * 0.05;
+
+                                      //配列に追加
+                                      enemyList.push(e_obj);
+                                  } 
+
+                                  //敵描画
+                                  createEnemy(ctx);
+                                  myTimer = setTimeout('mainLoop()', 30);
+                              }
+                           
+                          </pre>
+                      </code>
+                      <p>おまけ</p>
+                      <p><q>iOS6から、requestAnimationFrame として知られている Animation Timing API がサポートされました。これによって setInterval をつかったダサイ描画ループは卒業ですね！</q></p>
+                      <p>とのことです。</p>
+                      <p>参考:<a href="http://dsuket.hatenablog.com/entry/2012/09/20/130611" target="_blank">iPhone5 と iOS6 での HTML5開発についてあれこれ</a>(iOS6のHTML5関係の変更点がまとまっています。)</p>
+                      <p>参考:<a href="http://d.hatena.ne.jp/calpo/20110523/p1" target="_blank">requestAnimationFrame ＜ よーしおまえらー、アニメーションにsetInterval使うなよー</a>(requestAnimationFrameについて)</p> 
+                  </article>
+              </section>
+               <section>
+                  <article>
+                      <hgroup>
+                          <h1 id="sec_4">ユーザーエージェントを見分けるには？</h1>
+                          <h2>"if (('createTouch' in document) || ('ontouchstart' in document))"</h2>
+                    </hgroup>
+                    <p>苦労してピクセルパーフェクトから脱却したものの、PCでシューティングゲームを見ると…
+                    <div><img id="pc_screen" src="style/pc_screen.png" alt="％で大きさを指定した時にシューティングゲームをPCで開いた時のスクリーンショットです。"></div>
+                    <p>すごく大きな画面が表示されて、自機がぺちゃんこになりました。<a href="style/uwaaa.jpg" target="_blank">びっくりしました。</a></p>
+                    <p>PCでアクセスした時と、スマホでアクセスした時に画面サイズを変えないといけないことを学びました。ユーザーエージェントを判断する良い方法を探していると、if文ひとつである程度まで判断できるらしいことが分かりました。</p>
+                    <code>
+                        <pre class="brush: javascript; ">
+                            //ユーザーエージェントの判断
+                            //createTouchはiOS2.0以上のMobile Safariに実装されている
+                            //タッチイベント時のx座標やy座標などが取得できる
+                            if (('createTouch' in document) || ('ontouchstart' in document)){
+
+                              //スマホからのアクセスの場合、sm_canvas.htmlに飛ばす
+                              document.location.href = "sm_canvas.html";
+
+                            } else {
+
+                              // PCからのアクセスの場合、pc_canvas.htmlに飛ばす
+                              document.location.href = "pc_canvas.html";
+                              
+                            }
+                        </pre>
+                    </code>
+                    <p>Javascriptのin演算子は、<q>あるプロパティ又はメソッドがあるオブジェクトに存在するかどうかを調べる</q>ことができるそうです。ユーザーエージェントで判断する方法もありますが、<a href="http://f.daccot.com/2011/12/13/10234/" target="_blank">偽装も簡単にできる</a>のでこの方法を試してみても良いかもしれません。</p>
+                    <p>参考:<a href="http://serima.co/blog/?p=373" target="_blank">スマホ/PCからのアクセスを厳密に判定する方法</a></p> 
+                    <p>参考:<a href="http://codaholic.org/?p=1101" target="_blank">[Javascript]in演算子の使い方</a></p>
+                  </article>
+              </section>
+              <section>
+                  <article>
+                      <h1 id="sec_5">まとめ</h1>
+                      <ul>
+                          <li>同じようなものを複数描画するときは、配列を使う。</li>
+                          <li>描画するインターバルが異なるものには、カウント用の変数を用意する。</li>
+                          <li>ユーザーエージェントの判断は、"if (('createTouch' in document) || ('ontouchstart' in document))"を使うと幸せになれるかもしれない。</li>
+                      </ul>
+                  </article>
+              </section>
+          </article>
+      </div>
+    <footer id="footer">
+      <p>Copyright &copy; Daiki Ikemoto </p>
+    </footer>
+  </div>
+</body>
+</html>
