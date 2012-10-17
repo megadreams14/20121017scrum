@@ -336,3 +336,12 @@ table tr td
   width: 600px;
   height: 300px;
 }
+
+.color_red {
+    color:red;
+}
+
+.color_blue {
+    color:blue;
+}
+

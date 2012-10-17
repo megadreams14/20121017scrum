@@ -14,14 +14,6 @@
 
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css'>
     <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css'>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCss.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js' type='text/javascript'></script>
-    <script src='http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js' type='text/javascript'></script>
-    <script language="javascript" type="text/javascript">
-    SyntaxHighlighter.config.bloggerMode = true;
-    SyntaxHighlighter.all();
-    </script>
     <script>
         window.onload = function() { setTimeout(scrollTo, 100, 0, 1); }
     </script>
@@ -32,181 +24,374 @@
     <div id="main">
         <header id="header">
             <div id="logo">
-              <h1>About<a href="#">_Canvas</a></h1>
-              <div class="slogan">Sep 21, 2012   Daiki Ikemoto</div>
+              <h1>社外<a href="#">勉強会</a>まとめ</h1>
+              <p class="slogan">
+                  <time datetime="2012-10-17">Oct 17, 2012</time>
+                  <br>
+                  Daiki Ikemoto, Ryo Fujiwara
+              </p>
             </div>
         </header>
       <div id="site_content">
           <article id="content">
+              <h1>ゲーム開発におけるScrumの実践例について</h1>
+              <p>発表者:株式会社ゲームポット　佐藤　洋三さん</p>
               <section>
                   <h1>目次</h1>
-                  <ul>
-                    <li><a href="#sec_1">何を作ったか？</a></li>
-                    <li><a href="#sec_2">複数の敵を描画するには？</a></li>
-                    <li><a href="#sec_3">描画するインターバルが異なるものを上手く描画するには？</a></li>
-                    <li><a href="#sec_4">ユーザーエージェントを見分けるには？</a></li>
-                    <li><a href="#sec_5">まとめ</a></li>
-
-                  </ul>
+                  <nav>
+                    <ul>
+                        <li><a href="#sec_1">概要</a></li>
+                        <li><a href="#sec_2">スクラムについて</a></li>
+                        <li><a href="#sec_3">ゲームポットでの実例</a></li>
+                        <li><a href="#sec_4">まとめ</a></li>
+                        <li><a href="#sec_5">質問</a></li>
+                        <li><a href="#sec_6">感想</a></li>
+                      </ul>
+                  </nav>
               </section>
               <section>
                   <article>
-                      <h1 id="sec_1">何を作ったか？</h1>
-                      <p>シューティングゲームを作りました。</p>
-                      <div><img src="style/screenshot.png" alt="シューティングゲームのスクリーンショットです。"></div>
-                      <p><a href="../index.html" target="_blank">デモ(http://ws.jpw.jp/fy12sp/01/)</a></p> 
-                      <p><a href="ikemoto_canvas.zip">ソースコードDL</a></p>
+                      <h1 id="sec_1">概要</h1>
+                      <p>
+                      　佐藤さんの発表は、「アジャイルは良く聞くけどスクラムって何？」という人や
+                      「スクラムって言葉を聞いたことあるけど実践したことはない」
+                      というスクラムについてあまり知らない人向けのプレゼンテーションでした。
+                      スクラムの基本的な説明から自社での実践例を紹介し、
+                      スクラムで開発する魅力や明日から出来ること、注意点などを発表されていました。
+                      </p>
+                      <p>
+                      　発表用資料は、slideshareに公開されています。
+                      <a href="http://www.slideshare.net/yoozoosato/20121017gmo-yours" target="_blank">発表資料</a></p> 
+                      <p>
+                      　以下より、発表された内容になります。
+                      </p>
+                      <p>
+                      　なお、この資料は、発表された内容を社内の人に共有し、実際の開発に活かせて頂くことが目的です。
+                      対象者は、サイバードの社員であるが主に研修講師の方々、FY12研修メンバーを中心に考えています。
+                      スライドの内容と口頭での内容をまとめたものとなり、この資料を見ればスクラムについて思い出せるよう、大事な点をまとめて共有致します。
+                      </p>
                   </article> 
               </section>
+
               <section>
                   <article>
-                      <hgroup>
-                          <h1 id="sec_2">複数の敵を描画するには？</h1>
-                          <h2>配列を使う</h2>
-                      </hgroup>
-                      <p>「どうやって、複数の敵を画面に描画するのか？」というところで結構詰まりました。</p>
-                      <p>敵を単体で描画するだけならば、</p>
-                      <pre class="brush: javascript; ">
-                        ctx.fillStyle = "rgb(200, 0, 0)";
-                        ctx.fillRect(20, 30, 60, 40);
-                      </pre>
-                      <p>これだけで済みます。</p>
-                      <p>しかし、今回は一定時間ごとに、敵をランダムな場所に出現させたいです。その場合、上記の方法ではきりがありません。敵を描画するためには、描画の起点となるx座標とy座標さえわかれば良かったので、オブジェクトを作りそれぞれにx座標、y座標を持たせて配列で管理しました。</p>
-
-                      <code>
-                          <pre class="brush: javascript; ">
-
-                              //敵の配列を作る
-                              var enemyList = new Array();
-
-                              //オブジェクトを作る（キーと値の組み合わせ作る）
-                              var e_obj = new Object();
-
-                              //敵を出現させる位置のx座標
-                              e_obj.x = Math.floor(Math.random() * (WIDTH - WIDTH / 11));
-
-                              //敵を出現させる時のy座標
-                              e_obj.y= HEIGHT * 0.05;
-
-                              //配列に追加
-                              enemyList.push(e_obj);
-
-                              //配列に含まれているオブジェクトを描画
-                              for(i = 0; i < enemyList.length; i++) {
-
-                                  ctx.fillRect(enemyList[i].x, enemyList[i].y, WIDTH / 11 , WIDTH / 11);
-
-                              }
-                          </pre>
-                      </code>
-                     
-                      <p>参考:<a href="http://d.hatena.ne.jp/juntk/20100425/1272201655" target="_blank">HTML5 Canvasでシューティングっぽいもの - juntkの日記</a></p>
-                  </article>
-              </section>
-              <section>
-                  <article>
-                      <hgroup>
-                          <h1 id="sec_3">描画するインターバルが異なるものを上手く描画するには？</h1>
-                          <h2>カウント用の変数を用意する</h2>
-                      </hgroup>
-                      <p>このシューティングゲームでは、30msごとに画面がクリアされ、再描画されます。描画の際には自機、弾、敵が描画されなければなりません。</p>
-                      <p>しかし、それぞれの描画のタイミングは異なります。例えば、敵が30msごとに出現すると大変なことになりますよね。さらに、今回は難易度設定のため、敵の出現タイミングを3000msごと,600msごと,150msごとの3段階に分けたいです。</p>
-                      <p>「一定のタイミングで出現させたいから"setTimeout(setInterval)"を、自機、弾、敵ごとに設定して使えば良いやん！」と考えて実装すると残念なことになります。それぞれの描画タイミングがバラバラなため、描画されたものがチラチラ消えたり現れたりしてしまいます。</p>
-                      <p>今回は画面が30msごとに再描画されるので、それにあわせて自機、弾、敵を描画するとチラチラしなくなります。
-                        そのために、30msごとにカウントされる変数を作ります。そして、3000msで敵を出現させたいのであれば「100カウントされたら敵を出現させる」ということを行えばOKです。</p>
-                      <code>
-                          <pre class="brush: javascript; ">
-                              //ループカウント用の変数
-                              var num = 0;
-
-                              //メインループ
-                              function mainLoop () {
-
-                                  //canvasのクリア
-                                  makeField ();
-
-                                  //自機描画
-                                  drawShip();
-
-                                  //カウント用の変数
-                                  num += 1;
-                                  
-                                  //3000msたったら敵を出現する。
-                                  if (num % 100 === 0){
-
-                                      var e_obj = new Object();
-
-                                      //敵が出現する位置のx座標は0 ~ 290  
-                                      e_obj.x = Math.floor(Math.random() * (WIDTH - WIDTH / 11));
-
-                                      //敵出現時のy座標
-                                      e_obj.y= HEIGHT * 0.05;
-
-                                      //配列に追加
-                                      enemyList.push(e_obj);
-                                  } 
-
-                                  //敵描画
-                                  createEnemy(ctx);
-                                  myTimer = setTimeout('mainLoop()', 30);
-                              }
-                           
-                          </pre>
-                      </code>
-                      <p>おまけ</p>
-                      <p><q>iOS6から、requestAnimationFrame として知られている Animation Timing API がサポートされました。これによって setInterval をつかったダサイ描画ループは卒業ですね！</q></p>
-                      <p>とのことです。</p>
-                      <p>参考:<a href="http://dsuket.hatenablog.com/entry/2012/09/20/130611" target="_blank">iPhone5 と iOS6 での HTML5開発についてあれこれ</a>(iOS6のHTML5関係の変更点がまとまっています。)</p>
-                      <p>参考:<a href="http://d.hatena.ne.jp/calpo/20110523/p1" target="_blank">requestAnimationFrame ＜ よーしおまえらー、アニメーションにsetInterval使うなよー</a>(requestAnimationFrameについて)</p> 
-                  </article>
-              </section>
-               <section>
-                  <article>
-                      <hgroup>
-                          <h1 id="sec_4">ユーザーエージェントを見分けるには？</h1>
-                          <h2>"if (('createTouch' in document) || ('ontouchstart' in document))"</h2>
-                    </hgroup>
-                    <p>苦労してピクセルパーフェクトから脱却したものの、PCでシューティングゲームを見ると…
-                    <div><img id="pc_screen" src="style/pc_screen.png" alt="％で大きさを指定した時にシューティングゲームをPCで開いた時のスクリーンショットです。"></div>
-                    <p>すごく大きな画面が表示されて、自機がぺちゃんこになりました。<a href="style/uwaaa.jpg" target="_blank">びっくりしました。</a></p>
-                    <p>PCでアクセスした時と、スマホでアクセスした時に画面サイズを変えないといけないことを学びました。ユーザーエージェントを判断する良い方法を探していると、if文ひとつである程度まで判断できるらしいことが分かりました。</p>
-                    <code>
-                        <pre class="brush: javascript; ">
-                            //ユーザーエージェントの判断
-                            //createTouchはiOS2.0以上のMobile Safariに実装されている
-                            //タッチイベント時のx座標やy座標などが取得できる
-                            if (('createTouch' in document) || ('ontouchstart' in document)){
-
-                              //スマホからのアクセスの場合、sm_canvas.htmlに飛ばす
-                              document.location.href = "sm_canvas.html";
-
-                            } else {
-
-                              // PCからのアクセスの場合、pc_canvas.htmlに飛ばす
-                              document.location.href = "pc_canvas.html";
-                              
-                            }
-                        </pre>
-                    </code>
-                    <p>Javascriptのin演算子は、<q>あるプロパティ又はメソッドがあるオブジェクトに存在するかどうかを調べる</q>ことができるそうです。ユーザーエージェントで判断する方法もありますが、<a href="http://f.daccot.com/2011/12/13/10234/" target="_blank">偽装も簡単にできる</a>のでこの方法を試してみても良いかもしれません。</p>
-                    <p>参考:<a href="http://serima.co/blog/?p=373" target="_blank">スマホ/PCからのアクセスを厳密に判定する方法</a></p> 
-                    <p>参考:<a href="http://codaholic.org/?p=1101" target="_blank">[Javascript]in演算子の使い方</a></p>
-                  </article>
-              </section>
-              <section>
-                  <article>
-                      <h1 id="sec_5">まとめ</h1>
+                      <h1 id="sec_2">スクラムについて</h1>
+                      
+                      <h2 id="sec_2_1">はじめに</h2>
+                      <p>
+                          <span class="color_red">「スクラムで開発を行う」</span>ことを目的にしてはいけない。   
+                          あくまでスクラムは、<span class="color_blue">「開発を楽しく、ゲームを面白くする」</span>ためのひとつの手段である。
+                      　創造的に価値を生み出し届けることがスクラムの価値であり、
+                      導入は大変だけれど理に適ったやり方であるため出来ること、やれそうなことから挑戦していけば良い。
+                      </p>
+                      
+                      <h2 id="sec_2_2">スクラムの概要</h2>
+                      <p>
+                      　"変化の激しい問題に対応するためのフレームワーク"
+                      </p>
+                      <p>
+                      　詳しくは<a href="http://www.scrum.org/Portals/0/Documents/Scrum%20Guides/Scrum%20Guide%20-%20JA.pdf">スクラムガイド</a>を参考とのこと
+                      </p>
+                      
+                      <h2 id="sec_2_3">スクラムでの３つの役割</h2>
                       <ul>
-                          <li>同じようなものを複数描画するときは、配列を使う。</li>
-                          <li>描画するインターバルが異なるものには、カウント用の変数を用意する。</li>
-                          <li>ユーザーエージェントの判断は、"if (('createTouch' in document) || ('ontouchstart' in document))"を使うと幸せになれるかもしれない。</li>
+                        <li>プロダクトオーナー（以下PO）</li>
+                        <li>開発チーム（以下Team）</li>
+                        <li>スクラムマスター（以下SM）</li>
+                      </ul>
+                      
+                      <h2 id="sec_2_4">スクラムでの成果物</h2>
+                      <ul>
+                          <li>プロダクトバックログ<br>
+                          　<span class="color_blue">何を作りたいか？</span>のリスト</li>
+                          <li>スプリントバックログ<br>
+                          　<span class="color_blue">何をどう作るのか？</span>のリスト</li>
+                          <li>インクリメント<br>
+                          　<span class="color_blue">作ったもの。</span>ユーザがそれで遊べるもの</li>
+                      </ul>
+                        <p>
+                        　成果物の中でも
+                            <span class="color_blue">
+                                「作ったものが遊べる」
+                            </span>
+                            ということが非常に大切である。
+                            紙のドキュメントで楽しさが伝わるものは小説など文章で提供したほうが良く、
+                            ゲームの楽しさなどは実際にプレイしてみないとわからないことが多いのが事実。
+                            スプリントの成果物として作ったものがプレイ出来ることにより
+                            ユーザとしてのフィードバックがもらえるため、柔軟に意見を取り入れながら開発が行える。
+                        </p>
+
+                        <h2 id="sec_2_5">会議体</h2>
+                        <p>
+                        　会議は時間に上限を設け約15分程度の長さで行い効率的に時間を使用する。
+                        </p>
+                        <ul>
+                            <li>スプリント計画ミーティング</li>
+                            <li>デイリースクラム</li>
+                            <li>スプリントレビュー</li>
+                            <li>スプリントレトロスペクティブ</li>
+                        </ul>
+
+                        <p>
+                        　スクラムの流れ図
+                        </p>                        
+                        <img src="" atr="スクラムの図">
+
+                        <p>
+                        　専門用語が難しいため、用語を置き換えて分かりやすくした図
+                        </p>
+                        <img src="" atr="スクラムの用語をわかりやすくした図">
+
+                        <p>
+                        　ゲームポットでは、２週間という小さいサイクルでスプリントを回している。
+                        　スクラムは、細かくスプリントを回して開発を行うため、
+                        状況変化に凄く強く柔軟な開発が行えることが利点である。
+                        </p>
+                  </article>
+              </section>
+              <section>
+                  <h1 id="sec_3">ゲームポットでの事例</h1>
+
+                  <article>
+                      <h1 id="sec_3_1">役割について</h2>
+                     
+                      <h2 id="sec_3_1_1">POについて</h3>
+                      <ul>
+                          <li>ゲームプロデューサのような企画部署の人になってもらいたい</li>
+                          <li>理想的なPOとして動いている人はほとんどいないのが現状</li>
+                          <li>POを明示的に立てないままプロジェクトを進めると失敗した</li>
+                      </ul>
+                      <p>
+                      　現状問題として、POを立ててその人にPOの仕事をお願いするのは結構大変。
+                      　理由は、
+                      <ul>
+                        <li>やることが多い</li>
+                        <li>全責任を追わなければならない</li>
+                        <li>部署がまたぐような人がPOになるとやりづらい点もある</li>
+                      </ul>
+                      ということがあげられる。
+                      </p>
+
+                      <p>POの行うことを図に表すと以下のようになります。</p>
+                      <img src="" alt="プロダクトオーナーの行う仕事">
+
+                      <p>
+                      　POの仕事を遂行するためには、情熱が凄く大切である。
+                      </p>
+
+
+                      <h2 id="sec_3_2">開発チームについて</h3>
+                      <ul>
+                          <li>２〜６人で編成</li>
+                          <li>プラグラマ＋デザイナの組み合わせで編成</li>
+                      </ul>
+                      <p>
+                      　スクラムでは、通常<span class="color_red">３人未満は良くない</span>と書かれている。
+                      なぜなら、<span class="color_blue">人と人との相互作用</span>が少なくなってしまうから。
+                      しかし、ゲームポットではプログラマとデザイナの混成チームで１案件を担当しているため、
+                      ２人のチームでも良い結果が生まれ、非常にお勧めの編成である。
+                      </p>
+
+                      <h2 id="sec_3_1_3">SMについて</h3>
+                      <ul>
+                          <li>認定スクラムマスターが部署内に３名いる</li>
+                          <li>基本的に１案件に１人SMを担当する</li>
+                          <li>1人のSMが複数の案件を兼任している</li>
+                      </ul>
+                      <p>
+                      　SMを兼任することは、スクラムの会議運用が非常に大変。
+                      ３つ兼任するとなると朝会が１つ１５分だとしても、それだけで４５分かかってしまう。
+                      また、スプリント計画もかなりの時間がかかってしまうため
+                      SMを兼任する際には、それぞれの案件でスプリントの開始時間をズラスことがおすすめ。
+
+                      </p>
+                  </article>
+            
+                  <article>
+                    <h1 id="sec_3_2">プロダクトバックログについて</h1>
+                    <p>
+                    　POがプロダクトバックログの持ち主。
+                    各プロダクトバックログは「ユーザーストーリ」というやりたいことリストで管理されている。
+                    　「ユーザーストーリ」は、<span class="color_blue">「〜（誰）〜として、〜（何）〜が欲しい」</span>という書式で記述し、
+                    <span class="color_blue">何を持って受け入れてもらえるのか</span>というDoneの定義を定める。
+                    </p>
+                    <p>
+                    また、SMは効率的なプロダクトバックログの管理方法を探す責任がある。
+                    </p>
+
+                    <p>色々なツールでプロダクトバックログの管理方法を試した結果</p>
+                    <img src="" alt="プロダクトバックログの管理方法の感想の表">
+                    <p>*GoogleDocsは複数人で同時編集が可能な点が優れている</p>
+                    <p>*PIVOTAL TRACKERは、１人で使用するなら無料だがグループで使用するとなると有償になる。また、機能が充実していて便利だが専門用語が多い。</p>
+
+                    <p>結局のところ、紙が一番最強であり一番扱いやすい</p>
+                    
+                  </article>
+                 
+                  
+                  <article>
+                    <h1 id="sec_3_3">スプリント計画ミーティング</h1>
+                    <p>スプリントの初日に約２〜４時間かけて計画を立てる。</p>
+                    <p>
+                    その際にプロダクトバックログにポイントを付与するが、
+                    ポイントの見積りで使用する方法が２種類ある。</p>
+                    <ul>
+                        <li>プランニングポーカー</li>
+                        <li>Tシャツサイズ</li>
+                    </ul>
+
+                    <h2 id="#3_3_1">プランニングポーカー</h2>
+                    <p>
+                    　プランニングポーカーは、相対的に見積もりを行う。
+                    有名な話でビルの高さを比べるときに、「何メートルあるか？」と聞かれても
+                    答えられないが、「あるビルと比べてどのくらいか？」と聞かれると
+                    おおよその見積りを出すことができる。
+                    </p>
+
+                    <img src="" alt="ビル郡の写真を相対的にビルの大きさを見積もるための写真">
+                    <p>
+                    　しかし、<span class="color_red">プランニングポーカーの目的は見積もることではない</span>。
+                    開発メンバーの<span class="color_blue">各プロダクトバックログの開発作業に対する認識のズレを合わせること</span>が目的である。
+
+
+                    </p>
+
+                    <h3 id="#3_3_2">Tシャツサイズ</h3>
+                    <p>
+                    　プランニングポーカーは時間がかかってしまうため、
+                    簡単に見積を行いたい時はTシャツサイズ（S,M,L,XL）で行うことがある。
+                    しかし、ざっくりとした見積りのためタスクの時間の見積であったり、
+                    作業に対する認識のズレが生じる可能性もある。
+                    </p>
+
+                  </article>
+                  
+                  <article>
+                      <h1 id="#3_4">デイリースクラム</h1>
+                      <p>
+                      　デイリースクラムの目的は、<span class="color_blue">開発者同士の間で情報共有</span>を行うことが目的である。
+                      スクラムマスターにも参加してもらってデイリースクラムを行いうが、
+                      スクラムマスターへの報告を行うミーティングではない。
+                      </p>
+                      <p>デイリースクラムの内容</p>
+                      <ul>
+                          <li>昨日やったこと</li>
+                          <li>今日やること</li>
+                          <li>困っていること</li>
+                          <li>バウンダウンチャートの更新</li>
+                      </ul>
+                      <p>
+                      　平鍋健児さんの「問題対私達」の図がデイリースクラムを表すのに適している。
+                      </p>
+                      <img src="" alt="">
+
+                      <p>
+                      　デイリースクラムの際にはタスクボードに向きあって、
+                      問題に対して議論をしていく姿勢を取ることで
+                      困っている内容などを話しあいやすい環境になる。
+                      </p>
+
+                      <p>バウンダウンチャートは、見積ったタスクの全ての時間が縦軸になり
+                      経過日時が横軸の表である。</p>
+                      <img src="" alt="バウンダウンチャートの図">
+                      
+                  </article>
+                  
+                  <article>
+                    <h1 id="#3_5">レビュー＆レトロスペクティブ</h1>
+                    <p>
+                    　多くの利害関係者に動くゲームの「デモ」を行うことによりフィードバックを頂き、
+                    次回以降のスプリントに反映させることによって
+                    より良いゲームを作ることが目的である。
+                    </p>
+                    <p>
+                    　なお、部長や執行役員のように偉い人達にも来てもらうことがポイントである。
+                    </p>
+
+                    <h2 id="#3_5_1">振り返り</h2>
+                    <p>全ての案件に対してKPTを使用して振り返りを行う</p>
+                    <ul>
+                        <li>Keep<br>
+                        今後のスプリントで続けること</li>
+                        <li>Problem<br>
+                        今後のスプリントで改善すること</li>
+                        <li>Try<br>
+                        今後のスプリントで挑戦してみたいこと</li>
+                    </ul>
+                    <p>問題点などを意識させれるように、目に止まって見えるところに掲載するのが良い</p>
+                  </article>
+              </section>
+
+              <section>
+                  <article>
+                      <h1 id="sec_4">まとめ</h1>
+                        <ul>
+                            <li><span class="color_red">「スクラムで開発を行う」</span>ことを目的にしてはいけない
+                            </li>
+                            <li>
+                            スクラムは、<span class="color_blue">「開発を楽しく、ゲームを面白くする」</span>ためのひとつの手段
+                            </li>
+                            <li>
+                            創造的に価値を生み出し届けることがスクラムの価値
+                            </li>
+                            <li>
+                            導入は大変だが、やれそうなことから挑戦していけば良い
+                            </li>
                       </ul>
                   </article>
+              </section>
+
+              <section>
+                <article>
+                <h1 id="sec_5">質問</h1>
+                <p>
+                　懇親会の際に、私達が実際にスクラムで開発を行なってきた時の疑問に思った点や分からない点の質問を行いました。以下が、質問の内容と回答です。
+                </p>
+
+                <h2>タスクを分割の精度について</h2>
+                <p>６時間以内（１日でコードがかける時間）に完了するものに分割する</p>
+                <p>３人未満だとタスクは分けず、また細かく分けすぎないようにする</p>
+                <p>人数にあわせてタスク分割の精度を変えると良い</p>
+
+                <h2>タスク見積りが時間通りにいかない</h2>
+                <p>0.25hのタスクなどはチームで共有する意味はないタスク</p>
+                <p>逆にゲームポットでは、20時間など１日を超える見積りをしてしまってダウンバウチャーとが全然進まない問題に陥った</p>
+                <p>時間単位で記述出来る（１日以内に終わる）レベルのタスクに分割する(わりとざっくりわける)</p>
+                <p>個々に分けるのは細かくわけても良い</p>
+
+                <h2>デザインと機能は密接な関係があるがどうタスクとして分割するか？</h2>
+                <p>タスクに分割はしない</p>
+                <p>機能とデザインは、１つのバックログとして記載する</p>
+                <p>※ある機能に対してデザインも含めOKをもらった点でDoneという解釈</p>
+
+                <h2>あるプロダクトバックログを外注している場合</h2>
+                <p>外注しているためいつ作業が終わるかがわからないため見積りは０ポイント</p>
+                <p>出来た成果物に対して結合処理が必要になるが、その作業ポイントについては
+                そのスプリント計画ミーティングで見積りを立てる</p>
+
+
+                <h2>Doneの定義からよくずれてしまう</h2>
+                <p>Doneの定義をプリントアウトして全員がいつでも見れる環境を作る</p>
+
+                <h2>エンジニアとデザイナーでの仕事の進め方について</h2>
+                <p>ゲームポットでは、基本的にコードのかけるデザイナーさんが多い</p>
+                <p>そのため、デザイン面だけでなく動きのある処理も担当してくれる</p>
+                <p>複雑な動きの場合は、イメージを共有しエンジニアがコードを書いている</p>
+                </article>  
+                
+                
+                <article>  
+                    <h1 id="sec_6">感想</h1>
+                    <p>佐藤さんの発表は、スクラムの流れやそれぞれの目的の説明などスクラムに関しての基本的な内容のプレゼンテーションでした。そのため、スクラムの間違った認識の改善やそれぞれの目的の再確認を行えた時間になりました。</p>
+                    <p>８月と１０月のスクラムでの開発の際には、タスク分割の精度に悩まされていました。タスクが大雑把すぎたり、細かく分けすぎたりとどの精度でタスクを分割すれば良いのかわからなくなっていました。しかし、開発人数に応じてタスクの分割精度を変え、それぞれが担当するタスクについて自分の中で個々にタスクを細かく分けていく方針で良いとアドバイスを頂いたことにより、第５スプリントからはバーンダウンチャートを使用しつつ時間の見積りも考慮した開発を行なっていこうと思いました。</p>
+                    <p>デザインと機能は密接な関係があるため、タスクに分割する際にどうしたら良いのか毎回疑問に思っている内容でした。その点についても、密接な関係がある分タスクで分割する必要はなく２つで１つの考え方でバックログとして定義しておくべきだと学びました。デコレーションの場合は、タスクに入ると感じましたが、その点も確認すればよかったと感じています。</p>
+                </article>  
+              
               </section>
           </article>
       </div>
     <footer id="footer">
-      <p>Copyright &copy; Daiki Ikemoto </p>
+      <p>Copyright &copy; Daiki Ikemoto, Ryo Fujiwara </p>
     </footer>
   </div>
 </body>

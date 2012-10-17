@@ -1,0 +1,331 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>About Canvas</title>
+    <meta name="viewport” content="width=device-width”>
+    <meta name="description" content="website description">
+    <meta name="keywords" content="website keywords, website keywords" >
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252" >
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine&amp;v1" >
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" >
+    <link rel="stylesheet" type="text/css" href="style/style.css" >
+
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shCore.css' rel='stylesheet' type='text/css'>
+    <link href='http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css' rel='stylesheet' type='text/css'>
+    <script>
+        window.onload = function() { setTimeout(scrollTo, 100, 0, 1); }
+    </script>
+</head>
+
+
+<body>
+    <div id="main">
+        <header id="header">
+            <div id="logo">
+              <h1>社外<a href="#">勉強会</a>まとめ</h1>
+              <p class="slogan">
+                  <time datetime="2012-10-17">Oct 17, 2012</time>
+                  <br>
+                  Daiki Ikemoto, Ryo Fujiwara
+              </p>
+            </div>
+        </header>
+      <div id="site_content">
+          <article id="content">
+              <h1>ゲーム開発におけるScrumの実践例について</h1>
+              <dl>
+                <dt>発表者</dt>
+                <dd>株式会社ゲームポット　佐藤　洋三さん</dd>
+              </dl>
+              <section>
+                  <h1>目次</h1>
+                  <nav>
+                    <ul>
+                        <li><a href="#sec_1">概要</a></li>
+                        <li><a href="#sec_2">スクラムについて</a></li>
+                        <li><a href="#sec_3">ゲームポットでの事例</a></li>
+                        <li><a href="#sec_4"></a></li>
+                        <li><a href="#sec_5"></a></li>
+                      </ul>
+                  </nav>
+              </section>
+              <section>
+                  <article>
+                      <h1 id="sec_1">概要</h1>
+                      <p>
+                      　佐藤さんの発表は、「アジャイルは良く聞くけどスクラムって何？」という人や
+                      「スクラムって言葉を聞いたことあるけど実践したことはない」
+                      というスクラムについてあまり知らない人向けのプレゼンテーションでした。
+                      スクラムの基本的な説明から自社での実践例を紹介し、
+                      スクラムで開発する魅力や明日から出来ること、注意点などを発表されていました。
+                      </p>
+                      <p>
+                      　発表用資料は、slideshareに公開されています。
+                      <a href="http://www.slideshare.net/yoozoosato/20121017gmo-yours" target="_blank">発表資料</a></p> 
+                      <p>
+                      　以下より、発表された内容になります。
+                      </p>
+                      <p>
+                      　なお、この資料は、発表された内容を社内の人に共有し、実際の開発に活かせて頂くことが目的です。
+                      対象者は、サイバードの社員であるが主に研修講師の方々、FY12研修メンバーを中心に考えています。
+                      主にスライドをご覧になれば内容が理解出来るため、大事な点のみをまとめて共有致します。
+                      </p>
+                  </article> 
+              </section>
+
+              <section>
+                  <article>
+                      <h1 id="sec_2">スクラムについて</h1>
+                      <h2 id="sec_2_1">はじめに</h2>
+                      <p>
+                      　<span class="color_red">「スクラムで開発を行う」</span>ということを目的にしてはいけない。というお話から始まりました。
+                      あくまでスクラムは、<span class="color_blue">「開発を楽しく、ゲームを面白くする」</span>ためのひとつの手段です。
+                      　創造的に価値を生み出し届けることがスクラムの価値であり、
+                      導入は大変だけれど理に適ったやり方であるため出来ること、やれそうなことから挑戦していけば良いというお話でした。
+                      </p>
+                      <p>
+                      　その後、スクラムについて簡単に概要を説明されました。
+                      </p>
+                      <h2 id="sec_2_2">スクラムの概要</h2>
+                      <p>
+                      　"変化の激しい問題に対応するためのフレームワーク"
+                      </p>
+                      <p>
+                      　詳しくは<a href="http://www.scrum.org/Portals/0/Documents/Scrum%20Guides/Scrum%20Guide%20-%20JA.pdf">スクラムガイド</a>を参考とのこと
+                      </p>
+                      
+                      <h2 id="sec_2_3">スクラムでの３つの役割</h2>
+                      <ul>
+                        <li>プロダクトオーナー（以下PO）</li>
+                        <li>開発チーム（以下Team）</li>
+                        <li>スクラムマスター（以下SM）</li>
+                      </ul>
+                      
+                      <h2 id="sec_2_4">スクラムでの成果物</h2>
+                      <ul>
+                          <li>プロダクトバックログ<br>
+                          　<span class="color_blue">何を作りたいか？</span>のリスト</li>
+                          <li>スプリントバックログ<br>
+                          　<span class="color_blue">何をどう作るのか？</span>のリスト</li>
+                          <li>インクリメント<br>
+                          　<span class="color_blue">作ったもの。</span>ユーザがそれで遊べるもの</li>
+                      </ul>
+                        <p>
+                        　成果物の中でも
+                            <span class="color_blue">
+                                「作ったものが遊べる」
+                            </span>
+                            ということが非常に大切です。
+                            紙のドキュメントで楽しさが伝わるものは小説など文章で提供したほうが良く、
+                            ゲームの楽しさなどは実際にプレイしてみないとわからないことが多いのが事実です。
+                            スプリントの成果物として作ったものがプレイ出来ることにより
+                            ユーザとしてのフィードバックがもらえるため、柔軟に意見を取り入れながら開発が行えます。
+                        </p>
+
+                        <h2 id="sec_2_5">会議体</h2>
+                        <p>
+                        　会議は時間に上限を設け約15分程度の長さで行い効率的に時間を使用します。
+                        </p>
+                        <ul>
+                            <li>スプリント計画ミーティング</li>
+                            <li>デイリースクラム</li>
+                            <li>スプリントレビュー</li>
+                            <li>スプリントレトロスペクティブ</li>
+                        </ul>
+
+                        <p>
+                        　スクラムの流れを図に表すと以下のようになります。
+                        </p>                        
+                        <img src="" atr="スクラムの図">
+
+                        <p>
+                        　専門用語が難しいので、用語を置き換えて分かりやすくした図が以下のものです。
+                        </p>
+                        <img src="" atr="スクラムの用語をわかりやすくした図">
+
+                        <p>
+                        　ゲームポットでは、２週間という小さいサイクルでスプリントを回されていました。
+                        　スクラムは、細かくスプリントを回して開発を行うため、
+                        状況変化に凄く強く柔軟な開発が行えることが利点です。
+                        </p>
+                  </article>
+              </section>
+              <section>
+                  <h1 id="sec_3">ゲームポットでの事例</h1>
+
+                  <article>
+                      <h1 id="sec_3_1">役割について</h2>
+                     
+                      <h2 id="sec_3_1_1">POについて</h3>
+                      <ul>
+                          <li>ゲームプロデューサのような企画部署の人になってもらいたい</li>
+                          <li>理想的なPOとして動いている人はほとんどいないのが現状</li>
+                          <li>POを明示的に立てないままプロジェクトを進めると失敗した</li>
+                      </ul>
+                      <p>
+                      　現状問題として、POを立ててその人にPOの仕事をお願いするのは結構大変です。
+                      　理由は、
+                      <ul>
+                        <li>やることが多い</li>
+                        <li>全責任を追わなければならない</li>
+                        <li>部署がまたぐような人がPOになるとやりづらい点もある</li>
+                      </ul>
+                      ということがあげられます。
+                      </p>
+
+                      <p>POの行うことを図に表すと以下のようになります。</p>
+                      <img src="" alt="プロダクトオーナーの行う仕事">
+
+                      <p>
+                      　POの仕事を遂行するためには、情熱が凄く大切です。
+                      </p>
+
+
+                      <h2 id="sec_3_1_2">開発チームについて</h3>
+                      <ul>
+                          <li>２〜６人で編成</li>
+                          <li>プラグラマ＋デザイナの組み合わせで編成</li>
+                      </ul>
+                      <p>
+                      　スクラムでは、通常<span class="color_red">３人未満は良くない</span>と書かれています。
+                      なぜなら、<span class="color_blue">人と人との相互作用</span>が少なくなってしまうからです。
+                      しかし、ゲームポットではプログラマとデザイナの混成チームで１案件を担当しているため、
+                      ２人のチームでも良い結果が生まれ、非常にお勧めの編成です。
+                      </p>
+
+                      <h2 id="sec_3_1_3">SM</h3>
+                      <ul>
+                          <li>認定スクラムマスターが部署内に３名いる</li>
+                          <li>基本的に１案件に１人SMを担当する</li>
+                          <li>1人のSMが複数の案件を兼任している</li>
+                      </ul>
+                      <p>
+                      　SMを兼任することは、スクラムの会議運用が非常に大変です。
+                      ３つ兼任するとなると朝会が１つ１５分だとしても、それだけで４５分かかってしまいます。
+                      また、スプリント計画もかなりの時間がかかってしまうため
+                      SMを兼任する際には、それぞれの案件でスプリントの開始時間をズラスことがおすすめです。
+
+                      </p>
+                  </article>
+            
+                  <article>
+                    <h1 id="sec_3_2">プロダクトバックログについて</h1>
+                    <p>
+                    　POがプロダクトバックログの持ち主です。
+                    各プロダクトバックログは「ユーザーストーリ」というやりたいことリストで管理されています。
+                    　「ユーザーストーリ」は、<span class="color_blue">「〜（誰）〜として、〜（何）〜が欲しい」</span>という書式で記述し、
+                    <span class="color_blue">何を持って受け入れてもらえるのか</span>というDoneの定義を定めます。
+                    </p>
+                    <p>
+                    また、SMが効率的なプロダクトバックログの管理方法を探す責任があります。　 
+                    </p>
+
+                    <p>色々なツールでプロダクトバックログの管理方法を試した結果</p>
+                    <img src="" alt="プロダクトバックログの管理方法の感想の表">
+                    <p>*GoogleDocsは複数人で同時編集が可能な点が優れている</p>
+                    <p>*PIVOTAL TRACKERは、１人で使用するなら無料だがグループで使用するとなると有償になる。また、機能が充実していて便利だが専門用語が多い。</p>
+
+                    <p>結局のところ、紙が一番最強であり一番扱いやすいです。</p>
+                    
+                  </article>
+                 
+                  
+                  <article>
+                    <h1 id="sec_3_3">スプリント計画ミーティング</h1>
+                    <p>スプリントの初日に約２〜４時間かけて計画を立てます。</p>
+                    <p>
+                    その際にプロダクトバックログにポイントを付与しますが、
+                    ポイントの見積りで使用する方法が２種類あります。</p>
+                    <ul>
+                        <li>プランニングポーカー</li>
+                        <li>Tシャツサイズ</li>
+                    </ul>
+
+                    <h2>プランニングポーカー</h2>
+                    <p>
+                    　プランニングポーカーは、相対的に見積もります。
+                    有名な話でビルの高さを比べるときに、「何メートルあるか？」と聞かれても
+                    答えられないが、「あるビルと比べてどのくらいか？」と聞かれると
+                    おおよその見積りを出すことができます。
+                    </p>
+
+                    <img src="" alt="ビル郡の写真を相対的にビルの大きさを見積もるための写真">
+                    <p>
+                    　しかし、<span class="color_red">プランニングポーカーの目的は見積もることではありません</span>。
+                    開発メンバーの<span class="color_blue">各プロダクトバックログの開発作業に対する認識のズレを合わせること</span>が目的です。
+
+
+                    </p>
+
+                    <h3>Tシャツサイズ</h3>
+                    <p>
+                    　プランニングポーカーは時間がかかってしまうため、
+                    簡単に見積を行いたい時はTシャツサイズ（S,M,L,XL）で行うことがあります。
+                    しかし、ざっくりとしたみつもりのためタスクの時間の見積であったり、
+                    作業に対する認識のズレが生じる可能性もあります。
+                    </p>
+
+                    <h3>タスク分割</h3>
+                    <p>
+                    　見積が終われば、スプリントで作業するユーザストーリを
+                    作業レベルに分割してタスクを作成していきます。
+                    </p>
+                  </article>
+                  
+                  <article>
+                      <h1>デイリースクラム</h1>
+                      <p>
+                      　デイリースクラムの目的は、<span class="color_blue">開発者同士の間で情報共有</span>を行うことが目的です。
+                      スクラムマスターにも参加してもらってデイリースクラムを行いますが、スクラムマスターへの報告を行うミーティングではありません。
+                      </p>
+                      <p>デイリースクラムの内容</p>
+                      <ul>
+                          <li>昨日やったこと</li>
+                          <li>今日やること</li>
+                          <li>困っていること</li>
+                          <li>バウンダウンチャートの更新</li>
+                      </ul>
+                      <p>
+                      　平鍋健児さんの「問題対私達」の図がデイリースクラムを表すのに適しています。
+                      </p>
+                      <img src="" alt="">
+
+                      <p>
+                      　デイリースクラムの際にはタスクボードに向きあって、
+                      問題に対して議論をしていく姿勢を取ることで
+                      困っている内容などを話しあいやすい環境になります。
+                      </p>
+
+                      <p>バウンダウンチャートは、見積ったタスクの全ての時間が縦軸になり
+                      経過日時が横軸の表を表します。</p>
+                      <img src="" alt="バウンダウンチャートの図">
+                      
+                  </article>
+                  
+                  <article>
+                    <h1></h1>
+               
+                  </article>
+
+              </section>
+
+              <section>
+                  <article>
+                      <h1 id="sec_5">まとめ</h1>
+                      <ul>
+                          <li>同じようなものを複数描画するときは、配列を使う。</li>
+                          <li>描画するインターバルが異なるものには、カウント用の変数を用意する。</li>
+                          <li>ユーザーエージェントの判断は、"if (('createTouch' in document) || ('ontouchstart' in document))"を使うと幸せになれるかもしれない。</li>
+                      </ul>
+                  </article>
+              </section>
+          </article>
+      </div>
+    <footer id="footer">
+      <p>Copyright &copy; Daiki Ikemoto, Ryo Fujiwara </p>
+    </footer>
+  </div>
+</body>
+</html>
